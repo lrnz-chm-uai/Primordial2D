@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public UIDocument uiDocument;
     public GameObject explossionEffect;
     private Label scoreLabel;
+    private Label highScoreLabel;
     private GameObject shipFlair;
 
     private Button restartButton;
@@ -29,9 +30,11 @@ public class Player : MonoBehaviour
         if (uiDocument != null)
         {
             scoreLabel = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
+            highScoreLabel = uiDocument.rootVisualElement.Q<Label>("HighScoreLabel");
+            restartButton = uiDocument.rootVisualElement.Q<Button>("RestartButton"); // Q is a shorthand for Query, which finds the first element
+                                                                                     // of the specified type and name in the UI hierarchy.
         }
-        restartButton = uiDocument.rootVisualElement.Q<Button>("RestartButton"); // Q is a shorthand for Query, which finds the first element
-                                                                                 // of the specified type and name in the UI hierarchy.
+        highScoreLabel.style.display = DisplayStyle.None; // Hide the high score label initially
         restartButton.style.display = DisplayStyle.None; // Hide the restart button initially
         restartButton.clicked += RestartScene;
     }
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour
     {
         MovePlayer();
         CalculateScore();
+        SaveHighScore();
     }
 
     void MovePlayer()
@@ -79,14 +83,27 @@ public class Player : MonoBehaviour
     {
         elapsedTime += Time.deltaTime;
         score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
-        scoreLabel.text = $"Score: {score}";
+        scoreLabel.text = $"SCORE: {score}";
+    }
+
+    void SaveHighScore()
+    {
+        int highScore = PlayerPrefs.GetInt("HighScore");
+        if (score > highScore)
+        {
+            PlayerPrefs.SetInt("HighScore", (int)score);
+            highScoreLabel.text = $"HIGH SCORE: {score}";
+        }
     }
 
     // Collision detection with obstacles and borders
     void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log($"Score this run: {score}");
+        Debug.Log($"High score: {PlayerPrefs.GetInt("HighScore")}");
         Destroy(gameObject);
         Instantiate(explossionEffect, transform.position, Quaternion.identity); // Quaternion.identity means no rotation (2D)
+        highScoreLabel.style.display = DisplayStyle.Flex; // Show the high score label
         restartButton.style.display = DisplayStyle.Flex;
     }
 
