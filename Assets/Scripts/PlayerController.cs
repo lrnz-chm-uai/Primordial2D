@@ -3,21 +3,39 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
     public float thrustForce = 1f;
     public float maxSpeed = 10f;
     Rigidbody2D rb;
+    public UIDocument uiDocument;
+    private Label scoreLabel;
+    private GameObject shipFlair;
+    private float elapsedTime = 0f;
+    private float score = 0f;
+    private float scoreMultiplier = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        shipFlair = transform.Find("Flair")?.gameObject; // ? operator checks if the child exists before trying to access it
+        if (uiDocument != null)
+        {
+            scoreLabel = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
+        }
     }
 
     // Update is called once per frame
     void Update()
+    {
+        MovePlayer();
+        CalculateScore();
+    }
+
+    void MovePlayer()
     {
         // Left click detection
         // if (Mouse.current.leftButton.wasPressedThisFrame)
@@ -36,6 +54,10 @@ public class Player : MonoBehaviour
 
             // Apply thrust force in the direction of the mouse click
             rb.AddForce(direction * thrustForce, ForceMode2D.Impulse);
+            if (shipFlair != null)
+            {
+                shipFlair.SetActive(!shipFlair.activeSelf);
+            }
 
             // Limit player's maximum speed
             if (rb.velocity.magnitude > maxSpeed)
@@ -43,6 +65,13 @@ public class Player : MonoBehaviour
                 rb.velocity = rb.velocity.normalized * maxSpeed;
             }
         }
+    }
+
+    void CalculateScore()
+    {
+        elapsedTime += Time.deltaTime;
+        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
+        scoreLabel.text = $"Score: {score}";
     }
 
     // Collision detection with obstacles and borders
