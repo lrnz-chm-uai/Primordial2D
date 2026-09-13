@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
             // Initialize high score label with the saved value so it's correct after restarts
             if (highScoreLabel != null)
             {
-                int savedHigh = PlayerPrefs.GetInt("HighScore", 0);
+                int savedHigh = PlayerPrefs.GetInt("HighScore", 0); // 0 here is the default value if no high score is saved yet
                 highScoreLabel.text = $"HIGH SCORE: {savedHigh}";
                 highScoreLabel.style.display = DisplayStyle.None; // Hide the high score label initially
             }
@@ -112,8 +112,8 @@ public class Player : MonoBehaviour
     // Collision detection with obstacles and borders
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"Score this run: {score}");
-        Debug.Log($"High score: {PlayerPrefs.GetInt("HighScore")}");
+        //Debug.Log($"Score this run: {score}");
+        //Debug.Log($"High score: {PlayerPrefs.GetInt("HighScore")}");
         // Ensure the UI shows the stored high score when the player dies
         int savedHigh = PlayerPrefs.GetInt("HighScore", 0);
         if (highScoreLabel != null)
