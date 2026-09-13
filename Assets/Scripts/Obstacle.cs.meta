@@ -3,7 +3,8 @@ guid: 5120d57bba2a93d4ea7859df6264efae
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - collisionEffectPrefab: {fileID: 8452784044505383021, guid: 90c6b665adb42cd4fbd7e3cbea87d3e8, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

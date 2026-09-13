@@ -181,3 +181,6 @@ MonoBehaviour:
   maxSize: 2
   minSpeed: 100
   maxSpeed: 200
+  minTorque: -10
+  maxTorque: 10
+  collisionEffectPrefab: {fileID: 8452784044505383021, guid: 90c6b665adb42cd4fbd7e3cbea87d3e8, type: 3}

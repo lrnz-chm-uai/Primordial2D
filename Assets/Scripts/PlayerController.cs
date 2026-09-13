@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
@@ -11,8 +12,11 @@ public class Player : MonoBehaviour
     public float maxSpeed = 10f;
     Rigidbody2D rb;
     public UIDocument uiDocument;
+    public GameObject explossionEffect;
     private Label scoreLabel;
     private GameObject shipFlair;
+
+    private Button restartButton;
     private float elapsedTime = 0f;
     private float score = 0f;
     private float scoreMultiplier = 5f;
@@ -26,6 +30,10 @@ public class Player : MonoBehaviour
         {
             scoreLabel = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
         }
+        restartButton = uiDocument.rootVisualElement.Q<Button>("RestartButton"); // Q is a shorthand for Query, which finds the first element
+                                                                                 // of the specified type and name in the UI hierarchy.
+        restartButton.style.display = DisplayStyle.None; // Hide the restart button initially
+        restartButton.clicked += RestartScene;
     }
 
     // Update is called once per frame
@@ -78,5 +86,13 @@ public class Player : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);
+        Instantiate(explossionEffect, transform.position, Quaternion.identity); // Quaternion.identity means no rotation (2D)
+        restartButton.style.display = DisplayStyle.Flex;
+    }
+
+    void RestartScene()
+    {
+        // Reload the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

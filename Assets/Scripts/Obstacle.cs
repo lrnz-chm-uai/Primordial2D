@@ -11,6 +11,7 @@ public class Obstacle : MonoBehaviour
     public float maxSpeed = 300f;
     public float minTorque = -10f;
     public float maxTorque = 10f;
+    public GameObject collisionEffectPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -26,9 +27,12 @@ public class Obstacle : MonoBehaviour
         rb.AddTorque(randomTorque);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        
+        Vector2 contactPoint = collision.GetContact(0).point;
+        GameObject collisionEffect = Instantiate(collisionEffectPrefab, contactPoint, Quaternion.identity);
+
+        // Destroy the effect after 1 second
+        Destroy(collisionEffect, 0.5f);
     }
 }

@@ -1284,6 +1284,7 @@ MonoBehaviour:
   thrustForce: 1
   maxSpeed: 10
   uiDocument: {fileID: 1649316910}
+  explossionEffect: {fileID: 6561960574412717023, guid: 996a163f3ad15454a9c65f6006df8f7d, type: 3}
 --- !u!1 &1287510946
 GameObject:
   m_ObjectHideFlags: 0
@@ -2823,6 +2824,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 122309485}
     m_Modifications:
+    - target: {fileID: 1183928566249671344, guid: 2c15bfdc194f13b49888376747f8190c, type: 3}
+      propertyPath: collisionEffect
+      value: 
+      objectReference: {fileID: 8452784044505383021, guid: 90c6b665adb42cd4fbd7e3cbea87d3e8, type: 3}
     - target: {fileID: 3941963249559446803, guid: 2c15bfdc194f13b49888376747f8190c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.61
