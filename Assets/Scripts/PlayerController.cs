@@ -33,10 +33,21 @@ public class Player : MonoBehaviour
             highScoreLabel = uiDocument.rootVisualElement.Q<Label>("HighScoreLabel");
             restartButton = uiDocument.rootVisualElement.Q<Button>("RestartButton"); // Q is a shorthand for Query, which finds the first element
                                                                                      // of the specified type and name in the UI hierarchy.
+
+            // Initialize high score label with the saved value so it's correct after restarts
+            if (highScoreLabel != null)
+            {
+                int savedHigh = PlayerPrefs.GetInt("HighScore", 0);
+                highScoreLabel.text = $"HIGH SCORE: {savedHigh}";
+                highScoreLabel.style.display = DisplayStyle.None; // Hide the high score label initially
+            }
+
+            if (restartButton != null)
+            {
+                restartButton.style.display = DisplayStyle.None; // Hide the restart button initially
+                restartButton.clicked += RestartScene;
+            }
         }
-        highScoreLabel.style.display = DisplayStyle.None; // Hide the high score label initially
-        restartButton.style.display = DisplayStyle.None; // Hide the restart button initially
-        restartButton.clicked += RestartScene;
     }
 
     // Update is called once per frame
@@ -83,7 +94,8 @@ public class Player : MonoBehaviour
     {
         elapsedTime += Time.deltaTime;
         score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
-        scoreLabel.text = $"SCORE: {score}";
+        if (scoreLabel != null)
+            scoreLabel.text = $"SCORE: {score}";
     }
 
     void SaveHighScore()
@@ -92,7 +104,8 @@ public class Player : MonoBehaviour
         if (score > highScore)
         {
             PlayerPrefs.SetInt("HighScore", (int)score);
-            highScoreLabel.text = $"HIGH SCORE: {score}";
+            if (highScoreLabel != null)
+                highScoreLabel.text = $"HIGH SCORE: {score}";
         }
     }
 
@@ -101,10 +114,18 @@ public class Player : MonoBehaviour
     {
         Debug.Log($"Score this run: {score}");
         Debug.Log($"High score: {PlayerPrefs.GetInt("HighScore")}");
-        Destroy(gameObject);
+        // Ensure the UI shows the stored high score when the player dies
+        int savedHigh = PlayerPrefs.GetInt("HighScore", 0);
+        if (highScoreLabel != null)
+        {
+            highScoreLabel.text = $"HIGH SCORE: {savedHigh}";
+            highScoreLabel.style.display = DisplayStyle.Flex; // Show the high score label
+        }
+        if (restartButton != null)
+            restartButton.style.display = DisplayStyle.Flex;
+
         Instantiate(explossionEffect, transform.position, Quaternion.identity); // Quaternion.identity means no rotation (2D)
-        highScoreLabel.style.display = DisplayStyle.Flex; // Show the high score label
-        restartButton.style.display = DisplayStyle.Flex;
+        Destroy(gameObject);
     }
 
     void RestartScene()
