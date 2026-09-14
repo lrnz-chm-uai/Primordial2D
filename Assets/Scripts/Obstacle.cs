@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    public float minSize = 0.5f;
-    public float maxSize = 2.0f;
+    private float minSize = 0.5f;
+    private float maxSize = 2.0f;
     Rigidbody2D rb;
-    public float minSpeed = 150f;
-    public float maxSpeed = 300f;
-    public float minTorque = -10f;
-    public float maxTorque = 10f;
+    private float minSpeed = 150f;
+    private float maxSpeed = 400f;
+    private float minTorque = -12f;
+    private float maxTorque = 12f;
     public GameObject collisionEffectPrefab;
 
     // Start is called before the first frame update
