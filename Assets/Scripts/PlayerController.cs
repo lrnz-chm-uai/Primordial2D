@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
+// TODO Change the entire game concept
+
 public class Player : MonoBehaviour
 {
     public float thrustForce = 1f;
@@ -13,6 +15,8 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     public UIDocument uiDocument;
     public GameObject explossionEffect;
+    public GameObject backgroundSatellites;
+    public GameObject borderParent;
     private Label scoreLabel;
     private Label highScoreLabel;
     private GameObject shipFlair;
@@ -25,6 +29,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Instantiate(backgroundSatellites);
         rb = GetComponent<Rigidbody2D>();
         shipFlair = transform.Find("Flair")?.gameObject; // ? operator checks if the child exists before trying to access it
         if (uiDocument != null)
@@ -50,8 +55,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    // FixedUpdate is called once per physics update, it is better for consistent rigidbody movement 
+    void FixedUpdate()
     {
         MovePlayer();
         CalculateScore();
@@ -109,6 +114,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    void RestartScene()
+    {
+        // Reload the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     // Collision detection with obstacles and borders
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -126,11 +137,6 @@ public class Player : MonoBehaviour
 
         Instantiate(explossionEffect, transform.position, Quaternion.identity); // Quaternion.identity means no rotation (2D)
         Destroy(gameObject);
-    }
-
-    void RestartScene()
-    {
-        // Reload the current scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        borderParent.SetActive(false); 
     }
 }
