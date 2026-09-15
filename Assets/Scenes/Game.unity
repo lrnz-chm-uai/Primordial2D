@@ -1423,7 +1423,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a1fe1bf95ccbd47a497fd0d6f8a5e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 1
+  moveForward:
+    m_Name: Move Forward
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: bdafacf5-a651-4166-8786-2158085d439b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 62181561-417c-41f4-8cf1-806c5265cf76
+      m_Path: <Pointer>/press
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Forward
+      m_Flags: 0
+    m_Flags: 0
+  lookPosition:
+    m_Name: Look Position
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c15e0179-c9c2-4da5-9bb0-10782e8322e6
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 998df2cf-fe37-46fa-b3c9-7d54c3d23669
+      m_Path: <Pointer>/position
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Look Position
+      m_Flags: 0
+    m_Flags: 0
+  thrustForce: 0.94
   maxSpeed: 10
   uiDocument: {fileID: 1649316910}
   explossionEffect: {fileID: 6561960574412717023, guid: 996a163f3ad15454a9c65f6006df8f7d, type: 3}

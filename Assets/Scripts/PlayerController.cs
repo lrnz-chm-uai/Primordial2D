@@ -10,6 +10,8 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
+    public InputAction moveForward; // For mobile
+    public InputAction lookPosition; // For mobile
     public float thrustForce = 1f;
     public float maxSpeed = 10f;
     Rigidbody2D rb;
@@ -29,6 +31,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        moveForward.Enable();
+        lookPosition.Enable();
         Instantiate(backgroundSatellites);
         rb = GetComponent<Rigidbody2D>();
         shipFlair = transform.Find("Flair")?.gameObject; // ? operator checks if the child exists before trying to access it
@@ -70,10 +74,12 @@ public class Player : MonoBehaviour
         // Difference between wasPressedThisFrame and isPressed:
         // wasPressedThisFrame is true only for the frame when the button was pressed,
         // while isPressed is true for every frame the button is held down.
-        if (Mouse.current.leftButton.isPressed)
+        // if (Mouse.current.leftButton.isPressed)
+        if (moveForward.IsPressed())
         {
             // World space position of the click
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            // Vector3 mousePosition = Camera.main.screentoworldpoint(mouse.current.position.value);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(lookPosition.ReadValue<Vector2>());
 
             // Player faces mouse position (in 2D)
             // Normalize the direction vector to get constant speed
